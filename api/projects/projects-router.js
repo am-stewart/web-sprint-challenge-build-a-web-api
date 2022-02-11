@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { validateId, validateProject, validateProjectUpdate } = require('./projects-middleware');
+const { validateId, validateProject } = require('./projects-middleware');
 
 const Projects = require('./projects-model');
 const Actions = require('./../actions/actions-model');
@@ -30,12 +30,36 @@ router.post('/', validateProject, (req, res, next) => {
         .catch(next);
 });
 
-router.put('/:id', validateId, validateProjectUpdate, (req, res, next) => {
-    Projects.update(req.project)
-        .then(project => {
-            res.json(project)
-        })
-        .catch(next);
+router.put('/:id', (req, res, next) => {
+    const { id } = req.params;
+    const { name, description, completed } = req.body;
+
+    if(!name || !description || completed === undefined) {
+        res.status(400).json({ message: 'Name, description, and completed status are required' })
+    } else {
+        Projects.get(id)
+            .then(project => {
+                if(!project) {
+                    res.status(404).json({ message: 'The project with that id does not exist' })
+                } else {
+                    return Projects.update(req.params.id, req.body)
+                }
+            })
+            .then(data => {
+                if (data) {
+                    return Projects.get(req.params.id)
+                }
+            })
+            .then(project => {
+                if (project) {
+                    res.json(project)
+                }
+            })
+            .catch(error => {
+                console.log(error);
+                res.status(500).json({ message: 'The project information could not be modified'})
+            })
+    }
 });
 
 router.delete('/:id', (req, res, next) => {

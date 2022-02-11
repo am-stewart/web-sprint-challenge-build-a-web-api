@@ -27,24 +27,10 @@ function validateProject(req, res, next) {
     }
 }
 
-function validateProjectUpdate(req, res, next) {
-    if (req.body.name && req.body.description && req.body.completed) {
-        res.json(req.project)
-        console.log('project', req.project)
-        console.log('body', req.body)
-        next();
-    } else {
-        next({
-            status: 400,
-            message: 'a valid name, description, and completed status are required'
-        });
-    }
-}
 //validateActionBody
 
 //EXPORT MIDDLEWARE AS INDIVIDUAL THINGS
 module.exports = {
     validateId,
-    validateProject,
-    validateProjectUpdate
+    validateProject
 }
