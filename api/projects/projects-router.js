@@ -1,6 +1,6 @@
 const express = require('express');
 
-const { validateId, validateProject } = require('./projects-middleware');
+const { validateId, validateProject, validateProjectUpdate } = require('./projects-middleware');
 
 const Projects = require('./projects-model');
 const Actions = require('./../actions/actions-model');
@@ -30,10 +30,12 @@ router.post('/', validateProject, (req, res, next) => {
         .catch(next);
 });
 
-router.put('/:id', (req, res, next) => {
-    //returns the updated project as the body of the response
-    //if there is no project with the given id it responds with a status code 404
-    //if the request body is missing any of the required fields it responds with a status code 400
+router.put('/:id', validateId, validateProjectUpdate, (req, res, next) => {
+    Projects.update(req.project)
+        .then(project => {
+            res.json(project)
+        })
+        .catch(next);
 });
 
 router.delete('/:id', (req, res, next) => {
