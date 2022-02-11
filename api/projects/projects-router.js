@@ -3,11 +3,10 @@ const express = require('express');
 const { validateId, validateProject } = require('./projects-middleware');
 
 const Projects = require('./projects-model');
-const Actions = require('./../actions/actions-model');
 
 const router = express.Router();
 
-router.get('/', async (req, res, next) => {
+router.get('/', (req, res, next) => {
     Projects.get() 
         .then(projects => {
             if(projects) {
