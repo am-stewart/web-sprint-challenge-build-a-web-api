@@ -16,6 +16,19 @@ function validateId(req, res, next) {
         .catch(next);
 }
 
+function validateAction(req, res, next) {
+    if (req.body.description && req.body.notes && req.body.project_id) {
+        res.json(req.body)
+        next();
+    } else {
+        next({
+            status: 400,
+            message: 'a valid description and notes are required'
+        });
+    }
+}
+
 module.exports = {
-    validateId
+    validateId,
+    validateAction
 };

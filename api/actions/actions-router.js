@@ -1,7 +1,7 @@
 const express = require('express');
 
 ///import middleware here
-const { validateId } = require('./actions-middlware');
+const { validateId, validateAction } = require('./actions-middlware');
 
 const Actions = require('./actions-model');
 const router = express.Router();
@@ -21,8 +21,12 @@ router.get('/:id', validateId, (req, res) => {
     res.json(req.action);
 });
 
-router.post('/', (req, res, next) => {
-
+router.post('/', validateAction, (req, res, next) => {
+    Actions.insert(req.body)
+        .then(action => {
+            res.json(action)
+        })
+        .catch(next);
 });
 
 router.put('/:id', (req, res, next) => {
