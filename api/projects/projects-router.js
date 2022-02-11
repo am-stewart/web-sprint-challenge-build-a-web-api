@@ -30,7 +30,7 @@ router.post('/', validateProject, (req, res, next) => {
         .catch(next);
 });
 
-router.put('/:id', (req, res, next) => {
+router.put('/:id', (req, res) => {
     const { id } = req.params;
     const { name, description, completed } = req.body;
 
@@ -62,9 +62,14 @@ router.put('/:id', (req, res, next) => {
     }
 });
 
-router.delete('/:id', (req, res, next) => {
-    //returns NO response body
-    //if there is no project with the given id it responds with a status code 404
+router.delete('/:id', validateId, async (req, res, next) => {
+    try {
+        await Projects.get(req.params.id)
+        await Projects.remove(req.params.id)
+        res.json();
+    } catch(err) {
+        next(err)
+    }
 });
 
 router.get('/:id/actions', (req, res, next) => {
