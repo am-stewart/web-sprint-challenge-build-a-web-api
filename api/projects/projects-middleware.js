@@ -1,8 +1,4 @@
-// add middlewares here related to projects
-
 const { get } = require('./projects-model')
-
-//will want middlewares for: checking valid id, checking for a valid project body, checking for a valid action body
 
 function validateId(req, res, next) {
     get(req.params.id)
@@ -19,10 +15,21 @@ function validateId(req, res, next) {
         })
         .catch(next);
 }
-//validateProjBody
+function validateProject(req, res, next) {
+    if (req.body.name && req.body.description) {
+        res.json(req.body)
+        next();
+    } else {
+        next({
+            status: 400,
+            message: 'a valid name and description are required'
+        });
+    }
+}
 //validateActionBody
 
 //EXPORT MIDDLEWARE AS INDIVIDUAL THINGS
 module.exports = {
-    validateId
+    validateId,
+    validateProject
 }

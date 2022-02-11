@@ -1,14 +1,11 @@
 const express = require('express');
 
-//inject middleware here const { middlewares listed } = require('middlewarepath')
-const { validateId } = require('./projects-middleware');
+const { validateId, validateProject } = require('./projects-middleware');
 
 const Projects = require('./projects-model');
 const Actions = require('./../actions/actions-model');
 
 const router = express.Router();
-
-// PROJECT ENDPOINTS!!!!
 
 router.get('/', async (req, res, next) => {
     Projects.get() 
@@ -21,15 +18,16 @@ router.get('/', async (req, res, next) => {
         }).catch(next)
 });
 
-router.get('/:id', validateId, (req, res, next) => {
+router.get('/:id', validateId, (req, res) => {
     res.json(req.project);
-    //return a project with the give id as the body of the response
-    //if there is no project with the give id it responds with a status code of 404
 });
 
-router.post('/', (req, res, next) => {
-    //returns the newly created project as the body of the response
-    //if the request body is missing any of the required fields it responds with a 400
+router.post('/', validateProject, (req, res, next) => {
+    Projects.insert(req.body)
+        .then(project => {
+            res.json(project)
+        })
+        .catch(next);
 });
 
 router.put('/:id', (req, res, next) => {
