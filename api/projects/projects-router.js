@@ -72,12 +72,15 @@ router.delete('/:id', validateId, async (req, res, next) => {
     }
 });
 
-router.get('/:id/actions', (req, res, next) => {
+router.get('/:id/actions', validateId, (req, res, next) => {
     //returns an array of actions (could be empty) belonging to a project with the given id
-    //if there is no project with the given id it responds with a status code 404
+    Projects.getProjectActions(req.params.id)
+        .then(actions => {
+            res.json(actions)
+        })
+        .catch(next);
 })
 
-///ERROR CATCH
 router.use((err, req, res, next) => {
     res.status(err.status || 500).json({
         custom: 'something went wrong in the projects router',

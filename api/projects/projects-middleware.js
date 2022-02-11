@@ -27,10 +27,7 @@ function validateProject(req, res, next) {
     }
 }
 
-//validateActionBody
-
-//EXPORT MIDDLEWARE AS INDIVIDUAL THINGS
 module.exports = {
     validateId,
     validateProject
-}
+};
