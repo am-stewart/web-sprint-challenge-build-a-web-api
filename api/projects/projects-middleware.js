@@ -18,7 +18,9 @@ function validateId(req, res, next) {
 
 function validateProject(req, res, next) {
     if (req.body.name && req.body.description) {
-        res.json(req.body)
+        (project => {
+            req.project = project
+        })
         next();
     } else {
         next({
