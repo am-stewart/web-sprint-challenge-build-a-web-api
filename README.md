@@ -147,7 +147,23 @@ We have provided test data for all the resources.
 Be prepared to demonstrate your understanding of this week's concepts by answering questions on the following topics. You might prepare by writing down your own answers before hand.
 
 1. The core features of Node.js and Express and why they are useful.
+  Node.js allows you to use the same language (JavaScript) between the server and the client. It is also asynchronous and gives us access to npm modules.
+  Express is a framework that we can use on top of Node.js. Express is very useful because it is so simple and compact. It also is compatible with middleware so it can allow us to write a code that is more DRY.
+
 1. Understand and explain the use of Middleware.
+  By using middleware, you can create functions which can be used and applied to various endpoints. It allows you to write something out once (for example, a function to validate an id) and then use it for any endpoint that would be required to have a valid id without having to retype lines and lines of code. 
+
 1. The basic principles of the REST architectural style.
+  REST is a way of designing/distributing software. They are recommendations and there are (6) constraints: 
+    1. Everything is client - server based
+    2. It is stateless - nothing is getting stored on the server
+    3. Items are cacheable - this improved performance. You have GET, DELETE, PUT requests so the server can know where to go to get/delete things
+    4. It is a layered system - the client doesn't necessarily go directly to the server but there may be other layers between the two (ie authentication).
+    5. Code-on-demand - the API returns the resource and code. It makes the API more flexible and extendible 
+    6. User Interface - every resource should have a URL where you should be able to manage the resources, 
+
 1. Understand and explain the use of Express Routers.
+  By using Express Routers, you can break up the code within your API so it is more readable and organized. You can also write a more DRY code by having your server use the routes and only write out the beginning of the URL once. 
+
 1. Describe tooling used to manually test the correctness of an API.
+  There are tools like HHTPie and Postman that you can use to test your API as you go. You can write out your code and then use those tools to go to your endpoints, perform GET, PUT, POST, DELETE requests and see the response you are getting back from the server.
