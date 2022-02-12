@@ -63,7 +63,6 @@ router.put('/:id', (req, res) => {
 
 router.delete('/:id', validateId, async (req, res, next) => {
     try {
-        await Projects.get(req.params.id)
         await Projects.remove(req.params.id)
         res.json();
     } catch(err) {
@@ -80,7 +79,7 @@ router.get('/:id/actions', validateId, (req, res, next) => {
         .catch(next);
 })
 
-router.use((err, req, res, next) => {
+router.use((err, req, res) => {
     res.status(err.status || 500).json({
         custom: 'something went wrong in the projects router',
         message: err.message,

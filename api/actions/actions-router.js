@@ -1,6 +1,5 @@
 const express = require('express');
 
-///import middleware here
 const { validateId, validateAction, validateUpdate } = require('./actions-middlware');
 
 const Actions = require('./actions-model');
@@ -37,11 +36,16 @@ router.put('/:id', validateId, validateUpdate, (req, res, next) => {
         .catch(next)
 });
 
-router.delete('/:id', (req, res, next) => {
-
+router.delete('/:id', validateId, async (req, res, next) => {
+    try {
+        await Actions.remove(req.params.id)
+        res.json();
+    } catch(err) {
+        next(err)
+    }
 });
 
-router.use((err, req, res, next) => {
+router.use((err, req, res) => {
     res.status(err.status || 500).json({
         custom: 'something went wrong in the projects router',
         message: err.message,
